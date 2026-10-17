@@ -43,6 +43,17 @@ app.get("/health", (req, res) => {
   });
 });
 
+//endpoint de saludo al ingeniero
+app.get("/api/saludo", (req, res) => {
+  const nombre = (req.query.nombre || "").trim();
+
+  res.status(200).json({
+    mensaje: `Hola Ingeniero ${nombre || ""}`.trim() + ", bienvenido a la API",
+    nombre: nombre || "Ingeniero",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 //endpoint obtener productos
 app.get("/api/productos", (req, res) => {
   res.status(200).json([
@@ -85,7 +96,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error("Error", err.message);
 
-  res.status(error.status || 500).json({
+  res.status(err.status || 500).json({
     error: "Error procesando la solicitud",
   });
 });
